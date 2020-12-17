@@ -4,6 +4,7 @@ import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.impl.AirportInfoImpl;
 import com.foreflight.foreflighttest.impl.WeatherApiImpl;
 import com.foreflight.foreflighttest.model.AirportInfo;
+import com.foreflight.foreflighttest.model.AllInformation;
 import com.foreflight.foreflighttest.model.ForecastConditions;
 import com.foreflight.foreflighttest.model.Weather;
 import io.swagger.annotations.Api;
@@ -25,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -32,11 +34,11 @@ import java.util.List;
 @Api("Airport Controller")
 public class AirportCodeController {
 
-	@Autowired
-	WeatherApiImpl weatherApi;
-
-	@Autowired
-	AirportInfoImpl airportInfoImpl;
+//	@Autowired
+//	WeatherApiImpl weatherApi;
+//
+//	@Autowired
+//	AirportInfoImpl airportInfoImpl;
 	public static final int HEADER_VALUE = 1;
 
 	@Autowired
@@ -47,12 +49,32 @@ public class AirportCodeController {
 
 	private Weather weather;
 
-
+	@Autowired
+	private List<AllInformation> allInfo;
 	private AirportInfo airportInfo;
 
-	@GetMapping("/airportInfo")
-	@ApiOperation("Gets info about an airport")
-	public AirportInfo getAirportInfo(@ApiParam("Airport Code(s)")@RequestBody String airportCode){
+	@GetMapping("/airport")
+	public List<AllInformation> getAllInfo(String airportCode) throws ParseException {
+		String codes[]=airportCode.split(",");
+//		System.out.println(codes[0]);
+//		System.out.println(codes[1]);
+		System.out.println(codes.length);
+		for (int c=0; c <codes.length; c++){
+			System.out.println(codes[c]);
+			if (allInfo.size()<c+1){
+				allInfo.add(new AllInformation());
+			}
+
+			allInfo.get(c).setAirportInfo(getAirportInfo(codes[c]));
+			allInfo.get(c).setWeather(getWeather(codes[c]));
+		}
+
+
+		return allInfo;
+	}
+
+
+	public AirportInfo getAirportInfo(String airportCode){
 		String url = String.format("https://qa.foreflight.com/airports/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
@@ -67,7 +89,7 @@ public class AirportCodeController {
 		return airportInfo;
 	}
 
-	@GetMapping("/weather")
+
 	public Weather getWeather(String airportCode) throws ParseException {
 		String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
@@ -109,45 +131,5 @@ public class AirportCodeController {
 
 		return weather;
 	}
-
-//	@GetMapping("/weather")
-//	public String weatherForm(Model model) {
-//		model.addAttribute("airportCode", new AirportCode());
-//		return "airportCode";
-//	}
-//
-//	@PostMapping("/weather")
-//	public String weatherSubmit(@ModelAttribute AirportCode airportCode, Model model) {
-//		model.addAttribute("airportCode", airportCode);
-//		Weather weatherInfo = weatherApi.getWeather(airportCode.getContent());
-//		return "result";
-//	}
-
-
-	//	@GetMapping("/")
-//	public String airportCodeForm(Model model) {
-//		model.addAttribute("airportCode", new AirportCode());
-//		return "airportCode";
-//	}
-//
-//	@PostMapping("/")
-//	public String airportCodeSubmit(@ModelAttribute AirportCode airportCode, Model model) {
-//		model.addAttribute("airportCode", airportCode);
-//		AirportInfo airportInfo = airportInfoImpl.getAirportInfo(airportCode.getContent());
-//		return "result";
-//	}
-//
-//	@GetMapping("/")
-//	public String weatherForm(Model model) {
-//		model.addAttribute("airportCode", new AirportCode());
-//		return "airportCode";
-//	}
-//
-//	@PostMapping("/")
-//	public String weatherSubmit(@ModelAttribute AirportCode airportCode, Model model) {
-//		model.addAttribute("airportCode", airportCode);
-//		Weather weatherInfo = weatherApi.getWeather(airportCode.getContent());
-//		return "result";
-//	}
 
 }

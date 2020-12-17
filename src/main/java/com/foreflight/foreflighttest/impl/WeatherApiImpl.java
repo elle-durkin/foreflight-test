@@ -23,8 +23,6 @@ public class WeatherApiImpl {
     @Autowired
     private ConfigProperties configProperties;
 
-
-
     private Weather weather;
     private String username = configProperties.getUsername();
     private String password = configProperties.getPassword();
@@ -32,7 +30,6 @@ public class WeatherApiImpl {
 
     public Weather getWeather(String airportCode){
         String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
-//        String url = String.format("https://qa.foreflight.com/weather/report/kaus");
         HttpHeaders headers = new HttpHeaders();
 
         headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
@@ -42,7 +39,6 @@ public class WeatherApiImpl {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("ff-coding-exercise",HEADER_VALUE);
 
-//        ResponseEntity<Weather> response = restTemplate.getForEntity(url, Weather.class, headersEntity);
         ResponseEntity<Weather> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,Weather.class);
         System.out.println(response.getBody());
         this.weather = response.getBody();
