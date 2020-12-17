@@ -1,5 +1,6 @@
 package com.foreflight.foreflighttest.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.foreflight.foreflighttest.Calculate;
@@ -18,7 +19,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class Conditions {
 
-    @JsonProperty("tempC")
+    @JsonProperty("temp")
     private Double temp;
     @JsonProperty("relativeHumidity")
     private Integer relativeHumidity;
@@ -27,6 +28,18 @@ public class Conditions {
     private Double visibilitySM;
     private Double wind_speed;
     private Integer wind_dir;
+    @JsonProperty("dateIssued")
+    private String date;
+
+    @JsonProperty("temp")
+    public Double getTemp(){
+        return temp;
+    }
+
+    @JsonProperty("tempC")
+    public void setTemp(Double temp){
+        this.temp=temp;
+    }
 
     @JsonProperty("visibility")
     private void visibilityDeserializer(Map<String, Double> visibility) {
