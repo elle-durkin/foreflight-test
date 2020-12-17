@@ -2,17 +2,15 @@ package com.foreflight.foreflighttest.impl;
 
 import com.foreflight.foreflighttest.Calculate;
 import com.foreflight.foreflighttest.config.ConfigProperties;
-import com.foreflight.foreflighttest.model.Conditions;
 import com.foreflight.foreflighttest.model.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Arrays;
 
 @Component
 public class WeatherApiImpl {

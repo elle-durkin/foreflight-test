@@ -2,7 +2,6 @@ package com.foreflight.foreflighttest.impl;
 
 import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.model.AirportInfo;
-import com.foreflight.foreflighttest.model.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
