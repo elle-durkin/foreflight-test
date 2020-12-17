@@ -30,8 +30,8 @@ public class AirportInfoImpl {
 
 
     public AirportInfo getAirportInfo(String airportCode){
-//        String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
-        String url = String.format("https://qa.foreflight.com/airports/kaus");
+        String url = String.format("https://qa.foreflight.com/airports/%s",airportCode);
+//        String url = String.format("https://qa.foreflight.com/airports/kaus");
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
         headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));

@@ -32,7 +32,7 @@ public class AirportCodeController {
 		model.addAttribute("airportCode", airportCode);
 ////		Weather weather = weatherApi.getWeather(airportCode.getContent());
 //		Weather weather = weatherApi.getWeather("kaus");
-		AirportInfo airportInfo = airportInfoImpl.getAirportInfo("kaus");
+		AirportInfo airportInfo = airportInfoImpl.getAirportInfo(airportCode.getContent());
 		return "result";
 	}
 
