@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,4 +17,10 @@ public class AirportInfo {
     private Double latitude;
     @JsonProperty("longitude")
     private Double longitude;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("faaCode")
+    private String id;
+    @JsonProperty("runways")
+    private List<Runway> runways;
 }
