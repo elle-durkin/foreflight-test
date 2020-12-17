@@ -3,15 +3,14 @@ package com.foreflight.foreflighttest.impl;
 import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.model.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Arrays;
 
 @Component
 public class WeatherApiImpl {
@@ -31,16 +30,19 @@ public class WeatherApiImpl {
 
 
     public Weather getWeather(String airportCode){
-//        String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
-        String url = String.format("https://qa.foreflight.com/weather/report/kaus");
+        String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
+//        String url = String.format("https://qa.foreflight.com/weather/report/kaus");
         HttpHeaders headers = new HttpHeaders();
+
+        headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
         headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
         HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url).queryParam("ff-coding-exercise",HEADER_VALUE);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("ff-coding-exercise",HEADER_VALUE);
 
 //        ResponseEntity<Weather> response = restTemplate.getForEntity(url, Weather.class, headersEntity);
-        ResponseEntity<Weather> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, headersEntity,Weather.class);
+        ResponseEntity<Weather> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,Weather.class);
         System.out.println(response.getBody());
         this.weather = response.getBody();
         return weather;

@@ -14,11 +14,10 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonRootName(value = "report")
 public class Weather {
 
-    @JsonProperty("conditions")
-    private Conditions conditions;
+    @JsonProperty("report")
+    private Report report;
 
 
 }

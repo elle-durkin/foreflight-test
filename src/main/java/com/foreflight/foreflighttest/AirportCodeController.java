@@ -21,18 +21,29 @@ public class AirportCodeController {
 	AirportInfoImpl airportInfoImpl;
 
 
+//	@GetMapping("/")
+//	public String airportCodeForm(Model model) {
+//		model.addAttribute("airportCode", new AirportCode());
+//		return "airportCode";
+//	}
+//
+//	@PostMapping("/")
+//	public String airportCodeSubmit(@ModelAttribute AirportCode airportCode, Model model) {
+//		model.addAttribute("airportCode", airportCode);
+//		AirportInfo airportInfo = airportInfoImpl.getAirportInfo(airportCode.getContent());
+//		return "result";
+//	}
+
 	@GetMapping("/")
-	public String airportCodeForm(Model model) {
+	public String weatherForm(Model model) {
 		model.addAttribute("airportCode", new AirportCode());
 		return "airportCode";
 	}
 
 	@PostMapping("/")
-	public String airportCodeSubmit(@ModelAttribute AirportCode airportCode, Model model) {
+	public String weatherSubmit(@ModelAttribute AirportCode airportCode, Model model) {
 		model.addAttribute("airportCode", airportCode);
-////		Weather weather = weatherApi.getWeather(airportCode.getContent());
-//		Weather weather = weatherApi.getWeather("kaus");
-		AirportInfo airportInfo = airportInfoImpl.getAirportInfo(airportCode.getContent());
+		Weather weatherInfo = weatherApi.getWeather(airportCode.getContent());
 		return "result";
 	}
 
