@@ -1,6 +1,8 @@
 package com.foreflight.foreflighttest.impl;
 
+import com.foreflight.foreflighttest.Calculate;
 import com.foreflight.foreflighttest.config.ConfigProperties;
+import com.foreflight.foreflighttest.model.Conditions;
 import com.foreflight.foreflighttest.model.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -24,6 +26,7 @@ public class WeatherApiImpl {
     private ConfigProperties configProperties;
 
 
+
     private Weather weather;
     private String username = configProperties.getUsername();
     private String password = configProperties.getPassword();
@@ -45,6 +48,11 @@ public class WeatherApiImpl {
         ResponseEntity<Weather> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,Weather.class);
         System.out.println(response.getBody());
         this.weather = response.getBody();
+        Calculate calculate = new Calculate();
+        Double origTemp=weather.getReport().getConditions().getTemp();
+        Double origWindSpeed=weather.getReport().getConditions().getWind_speed();
+        weather.getReport().getConditions().setTemp(calculate.convertTemp(origTemp));
+        weather.getReport().getConditions().setWind_speed(calculate.convertSpeed(origWindSpeed));
         return weather;
     }
 }

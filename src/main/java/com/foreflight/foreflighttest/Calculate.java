@@ -1,10 +1,16 @@
 package com.foreflight.foreflighttest;
 
+import com.foreflight.foreflighttest.model.Conditions;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Calculate {
 
-    public int convertTemp(int celciusTemp){
-        int fahrenheitTemp =((celciusTemp*9)/5)+32;
+    @Autowired
+    Conditions conditions;
 
+    public Double convertTemp(Double celciusTemp){
+
+        double fahrenheitTemp =((celciusTemp*9)/5)+32;
         return fahrenheitTemp;
     }
 

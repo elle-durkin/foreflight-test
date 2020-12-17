@@ -23,5 +23,8 @@ public class Report {
     @JsonProperty("conditions")
     private Conditions conditions;
 
+    @JsonProperty("forecast")
+    private Forecast forecast;
+
 
 }
