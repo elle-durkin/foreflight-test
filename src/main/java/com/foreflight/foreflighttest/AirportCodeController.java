@@ -1,15 +1,10 @@
 package com.foreflight.foreflighttest;
 
-import com.foreflight.foreflighttest.config.ConfigProperties;
-import com.foreflight.foreflighttest.impl.AirportInfoImpl;
-import com.foreflight.foreflighttest.impl.WeatherApiImpl;
 import com.foreflight.foreflighttest.model.AirportInfo;
 import com.foreflight.foreflighttest.model.AllInformation;
 import com.foreflight.foreflighttest.model.ForecastConditions;
 import com.foreflight.foreflighttest.model.Weather;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
@@ -19,14 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +36,6 @@ public class AirportCodeController {
 
 	@Autowired
 	private RestTemplate restTemplate;
-
-	@Autowired
-	private ConfigProperties configProperties;
 
 	private Weather weather;
 

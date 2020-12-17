@@ -1,6 +1,5 @@
 package com.foreflight.foreflighttest.impl;
 
-import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.model.AirportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -19,13 +18,7 @@ public class AirportInfoImpl {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ConfigProperties configProperties;
-
-
     private AirportInfo airportInfo;
-    private String username = configProperties.getUsername();
-    private String password = configProperties.getPassword();
 
 
     public AirportInfo getAirportInfo(String airportCode){

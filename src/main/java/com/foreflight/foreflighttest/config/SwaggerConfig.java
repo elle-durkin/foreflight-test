@@ -1,6 +1,5 @@
 package com.foreflight.foreflighttest.config;
 
-import com.foreflight.foreflighttest.HandlingFormSubmissionApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;

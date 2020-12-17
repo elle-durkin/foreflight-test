@@ -1,7 +1,6 @@
 package com.foreflight.foreflighttest.impl;
 
 import com.foreflight.foreflighttest.Calculate;
-import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.model.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -20,12 +19,7 @@ public class WeatherApiImpl {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ConfigProperties configProperties;
-
     private Weather weather;
-    private String username = configProperties.getUsername();
-    private String password = configProperties.getPassword();
 
 
     public Weather getWeather(String airportCode){
