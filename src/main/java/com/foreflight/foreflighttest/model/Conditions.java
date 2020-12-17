@@ -1,5 +1,6 @@
 package com.foreflight.foreflighttest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class Conditions {
 
-    @JsonProperty("temp")
     private Double temp;
     @JsonProperty("relativeHumidity")
     private Integer relativeHumidity;
@@ -24,12 +24,22 @@ public class Conditions {
     private Double visibilitySM;
     private Double wind_speed;
     private Integer wind_dir;
-    @JsonProperty("dateIssued")
+
     private String date;
 
     @JsonProperty("temp")
     public Double getTemp(){
         return temp;
+    }
+
+    @JsonProperty("dateIssued")
+    public void setDate(String date){
+        this.date=date;
+    }
+    @JsonIgnore
+    @JsonProperty("dateIssued")
+    public String getDate(){
+        return date;
     }
 
     @JsonProperty("tempC")

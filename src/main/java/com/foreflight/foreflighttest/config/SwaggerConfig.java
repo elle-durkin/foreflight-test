@@ -16,7 +16,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(HandlingFormSubmissionApplication.class.getPackage().getName()))
+                .apis(RequestHandlerSelectors.basePackage("com.foreflight.foreflighttest"))
                 .paths(PathSelectors.any())
                 .build();
     }

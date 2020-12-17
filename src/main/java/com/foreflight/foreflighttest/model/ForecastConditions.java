@@ -1,5 +1,6 @@
 package com.foreflight.foreflighttest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +17,6 @@ public class ForecastConditions {
 
 //    @JsonProperty("temp")
 //    private Double temp;
-//    @JsonProperty("period")
-//    private Date date;
     private Double wind_speed;
     private Integer wind_dir;
     private String date;
@@ -43,6 +42,16 @@ public class ForecastConditions {
     @JsonProperty("period")
     private void periodDeserializer(Map<String, Object> period) {
         this.date = (String) period.get("dateStart");
+    }
+
+    @JsonProperty("dateIssued")
+    public void setDate(String date){
+        this.date=date;
+    }
+    @JsonIgnore
+    @JsonProperty("dateIssued")
+    public String getDate(){
+        return date;
     }
 
 }

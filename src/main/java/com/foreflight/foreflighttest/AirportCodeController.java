@@ -6,6 +6,9 @@ import com.foreflight.foreflighttest.impl.WeatherApiImpl;
 import com.foreflight.foreflighttest.model.AirportInfo;
 import com.foreflight.foreflighttest.model.ForecastConditions;
 import com.foreflight.foreflighttest.model.Weather;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@Api("Airport Controller")
 public class AirportCodeController {
 
 	@Autowired
@@ -46,9 +51,9 @@ public class AirportCodeController {
 	private AirportInfo airportInfo;
 
 	@GetMapping("/airportInfo")
-	public AirportInfo getAirportInfo(String airportCode){
+	@ApiOperation("Gets info about an airport")
+	public AirportInfo getAirportInfo(@ApiParam("Airport Code(s)")@RequestBody String airportCode){
 		String url = String.format("https://qa.foreflight.com/airports/%s",airportCode);
-//        String url = String.format("https://qa.foreflight.com/airports/kaus");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
