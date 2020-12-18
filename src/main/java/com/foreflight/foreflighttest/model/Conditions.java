@@ -49,7 +49,7 @@ public class Conditions {
 
     @JsonProperty("visibility")
     private void visibilityDeserializer(Map<String, Double> visibility) {
-        this.visibilitySM = (Double) visibility.get("distanceSm");
+        this.visibilitySM = visibility.get("distanceSm");
     }
 
     @JsonProperty("wind")
