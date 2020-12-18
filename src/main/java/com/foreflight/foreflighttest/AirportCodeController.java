@@ -5,6 +5,8 @@ import com.foreflight.foreflighttest.model.AllInformation;
 import com.foreflight.foreflighttest.model.ForecastConditions;
 import com.foreflight.foreflighttest.model.Weather;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,31 +26,33 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller for getting airport and weather information
+ */
 @RestController
-@Api("Airport Controller")
 public class AirportCodeController {
 
-//	@Autowired
-//	WeatherApiImpl weatherApi;
-//
-//	@Autowired
-//	AirportInfoImpl airportInfoImpl;
 	public static final int HEADER_VALUE = 1;
 
 	@Autowired
 	private RestTemplate restTemplate;
 
-	private Weather weather;
-
 	@Autowired
 	private List<AllInformation> allInfo;
+
+	private Weather weather;
 	private AirportInfo airportInfo;
 
+	/**
+	 * Gets all info.
+	 *
+	 * @param airportCode - Airport code or comma separated list inputted from user
+	 * @return the all info
+	 * @throws ParseException the parse exception
+	 */
 	@GetMapping("/airport")
-	public List<AllInformation> getAllInfo(String airportCode) throws ParseException {
+	public List<AllInformation> getAllInfo(@Parameter(description = "Airport code(s), example: aus,lax. To find identifiers: https://www.airnav.com/airports", name = "airportCode")String airportCode) throws ParseException {
 		String codes[]=airportCode.split(",");
-//		System.out.println(codes[0]);
-//		System.out.println(codes[1]);
 		System.out.println(codes.length);
 		for (int c=0; c <codes.length; c++){
 			System.out.println(codes[c]);
@@ -58,12 +63,16 @@ public class AirportCodeController {
 			allInfo.get(c).setAirportInfo(getAirportInfo(codes[c]));
 			allInfo.get(c).setWeather(getWeather(codes[c]));
 		}
-
-
 		return allInfo;
 	}
 
 
+	/**
+	 * Called by getAllInfo to return airport information
+	 *
+	 * @param airportCode the airport code
+	 * @return the airport info
+	 */
 	public AirportInfo getAirportInfo(String airportCode){
 		String url = String.format("https://qa.foreflight.com/airports/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
@@ -71,15 +80,21 @@ public class AirportCodeController {
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url).queryParam("ff-coding-exercise",HEADER_VALUE);
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
 
 		ResponseEntity<AirportInfo> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, headersEntity,AirportInfo.class);
-		System.out.println(response.getBody());
 		this.airportInfo = response.getBody();
 		return airportInfo;
 	}
 
 
+	/**
+	 * Called by getAllInfo to return weather information
+	 *
+	 * @param airportCode the airport code
+	 * @return the weather
+	 * @throws ParseException the parse exception
+	 */
 	public Weather getWeather(String airportCode) throws ParseException {
 		String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
@@ -88,11 +103,9 @@ public class AirportCodeController {
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
-				.queryParam("ff-coding-exercise",HEADER_VALUE);
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
 
 		ResponseEntity<Weather> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,Weather.class);
-		System.out.println(response.getBody());
 		this.weather = response.getBody();
 		Calculate calculate = new Calculate();
 		Double origTemp=weather.getReport().getConditions().getTemp();
@@ -115,8 +128,6 @@ public class AirportCodeController {
 			String minutes=String.format("%02d", Minutes.minutesBetween(dt2, dt1).getMinutes() % 60);
 			String diff=hours+":"+minutes;
 			weather.getReport().getForecast().getConditionsList().get(i).setDate_offset(diff);
-
-
 		}
 
 		return weather;

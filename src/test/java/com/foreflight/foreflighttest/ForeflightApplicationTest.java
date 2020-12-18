@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AirportCodeController.class)
 @TestPropertySource(properties = "logging.level.org.springframework.web=DEBUG")
-public class HandlingFormSubmissionApplicationTest {
+public class ForeflightApplicationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
