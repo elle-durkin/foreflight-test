@@ -15,23 +15,13 @@ import java.util.Map;
 @NoArgsConstructor
 public class ForecastConditions {
 
-//    @JsonProperty("temp")
-//    private Double temp;
+    @JsonProperty("temp")
+    private Double temp;
     private Double wind_speed;
     private Integer wind_dir;
     private String date;
     @JsonProperty("date_offset")
     private String date_offset;
-
-//    @JsonProperty("temp")
-//    public Double getTemp(){
-//        return temp;
-//    }
-//
-//    @JsonProperty("tempC")
-//    public void setTemp(Double temp){
-//        this.temp=temp;
-//    }
 
     @JsonProperty("wind")
     private void windDeserializer(Map<String, Object> wind) {

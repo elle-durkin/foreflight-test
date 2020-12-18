@@ -13,6 +13,7 @@ import java.util.Collections;
 
 @Configuration
 public class RestTemplateConfig {
+
     @Bean
     public RestTemplate restTemplate() throws Exception{
         HttpClient httpClient = HttpClients.custom().build();

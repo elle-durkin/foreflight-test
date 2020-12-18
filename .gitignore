@@ -9,3 +9,10 @@ target/
 *.iws
 *.iml
 *.ipr
+
+##NetBeans
+/nb/project/private
+/nbbuild
+/dist/
+.nb-gradle
+build/

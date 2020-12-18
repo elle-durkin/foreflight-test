@@ -1,11 +1,10 @@
 package com.foreflight.foreflighttest;
 
+import com.foreflight.foreflighttest.config.ConfigProperties;
 import com.foreflight.foreflighttest.model.AirportInfo;
 import com.foreflight.foreflighttest.model.AllInformation;
 import com.foreflight.foreflighttest.model.ForecastConditions;
 import com.foreflight.foreflighttest.model.Weather;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -40,6 +38,9 @@ public class AirportCodeController {
 	@Autowired
 	private List<AllInformation> allInfo;
 
+	@Autowired
+	ConfigProperties config;
+
 	private Weather weather;
 	private AirportInfo airportInfo;
 
@@ -53,9 +54,7 @@ public class AirportCodeController {
 	@GetMapping("/airport")
 	public List<AllInformation> getAllInfo(@Parameter(description = "Airport code(s), example: aus,lax. To find identifiers: https://www.airnav.com/airports", name = "airportCode")String airportCode) throws ParseException {
 		String codes[]=airportCode.split(",");
-		System.out.println(codes.length);
 		for (int c=0; c <codes.length; c++){
-			System.out.println(codes[c]);
 			if (allInfo.size()<c+1){
 				allInfo.add(new AllInformation());
 			}
@@ -76,7 +75,7 @@ public class AirportCodeController {
 	public AirportInfo getAirportInfo(String airportCode){
 		String url = String.format("https://qa.foreflight.com/airports/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
-		headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
+		headers.setBasicAuth(config.getUsername(),config.getPassword());
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
@@ -99,7 +98,7 @@ public class AirportCodeController {
 		String url = String.format("https://qa.foreflight.com/weather/report/%s",airportCode);
 		HttpHeaders headers = new HttpHeaders();
 
-		headers.setBasicAuth("ff-interview","@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9");
+		headers.setBasicAuth(config.getUsername(),config.getPassword());
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
