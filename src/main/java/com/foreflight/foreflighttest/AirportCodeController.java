@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,16 +32,16 @@ public class AirportCodeController {
 	public static final int HEADER_VALUE = 1;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	RestTemplate restTemplate;
 
 	@Autowired
-	private List<AllInformation> allInfo;
+	List<AllInformation> allInfo;
 
 	@Autowired
 	ConfigProperties config;
 
-	private Weather weather;
-	private AirportInfo airportInfo;
+	Weather weather;
+	AirportInfo airportInfo;
 
 	/**
 	 * Gets all info.
@@ -53,7 +52,7 @@ public class AirportCodeController {
 	 */
 	@GetMapping("/airport")
 	public List<AllInformation> getAllInfo(@Parameter(description = "Airport code(s), example: aus,lax. To find identifiers: https://www.airnav.com/airports", name = "airportCode")String airportCode) throws ParseException {
-		String codes[]=airportCode.split(",");
+		String[] codes =airportCode.split(",");
 		for (int c=0; c <codes.length; c++){
 			if (allInfo.size()<c+1){
 				allInfo.add(new AllInformation());
@@ -79,9 +78,7 @@ public class AirportCodeController {
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-
-		ResponseEntity<AirportInfo> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, headersEntity,AirportInfo.class);
+		ResponseEntity<AirportInfo> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,AirportInfo.class);
 		this.airportInfo = response.getBody();
 		return airportInfo;
 	}
@@ -102,13 +99,13 @@ public class AirportCodeController {
 		headers.add("ff-coding-exercise", String.valueOf(HEADER_VALUE));
 		HttpEntity<HttpHeaders> headersEntity = new HttpEntity<>(headers);
 
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
-
 		ResponseEntity<Weather> response = restTemplate.exchange(url, HttpMethod.GET, headersEntity,Weather.class);
 		this.weather = response.getBody();
 		Calculate calculate = new Calculate();
-		Double origTemp=weather.getReport().getConditions().getTemp();
-		Double origWindSpeed=weather.getReport().getConditions().getWind_speed();
+		Double origTemp;
+		Double origWindSpeed;
+		origTemp = weather.getReport().getConditions().getTemp();
+		origWindSpeed = weather.getReport().getConditions().getWind_speed();
 		if (origTemp != null) {
 			weather.getReport().getConditions().setTemp(calculate.convertTemp(origTemp));
 		}
@@ -118,7 +115,7 @@ public class AirportCodeController {
 
 		List<ForecastConditions> forecastConditionsList=weather.getReport().getForecast().getConditionsList();
 		for (int i=0; i<forecastConditionsList.size(); i++){
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss+ssss");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+ssss");
 			Date date1 = format.parse(forecastConditionsList.get(i).getDate());
 			Date current_date = format.parse(weather.getReport().getConditions().getDate());
 			DateTime dt1 = new DateTime(date1);
